@@ -4,16 +4,23 @@
 #include "game.h"
 #include "inputhandler.h"
 #include "global.h"
-#include "camera.h"
+#include "map.h"
+#include "player.h"
 
 SDL_Window *g_pWindow = NULL;
 SDL_Renderer *g_pRenderer = NULL;
-SDL_Texture *g_pTexture = NULL;
+SDL_Texture *g_pMapTexture = NULL;
+SDL_Texture *g_pSpriteSheetTexture = NULL;
 
+// 窗口宽高
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-// 静态变量的初始化
+// 地图宽高
+const int MAP_WIDTH = 2560;
+const int MAP_HEIGHT = 1200;
+
+// 静态成员变量的初始化
 CGame* CGame::s_pInstance = NULL;
 
 // 构造函数
@@ -30,7 +37,7 @@ CGame::~CGame()
 //函数名称：LoadImage
 //说明：加载图片到纹理对象
 //=========================================================
-bool LoadImage(const char* filename)
+bool LoadImage(const char* filename, SDL_Texture*& texture)
 {
 	if (filename == NULL)
 	{
@@ -41,11 +48,11 @@ bool LoadImage(const char* filename)
 	SDL_Surface *pTempSurface = IMG_Load(filename);  //加载启动图像(splash image)到SDL_Surface对象
 	if (pTempSurface == NULL)
 	{
-		printf("Unable to load image! SDL Error: %s\n", SDL_GetError());
+		printf("Unable to load image and recommend to check the path of image file! SDL Error: %s\n", SDL_GetError());
 		return false;
 	}
-	g_pTexture = SDL_CreateTextureFromSurface(g_pRenderer, pTempSurface); //使用SDL_Surface对象创建纹理(texture)
-	if (g_pTexture == NULL)
+	texture = SDL_CreateTextureFromSurface(g_pRenderer, pTempSurface); //使用SDL_Surface对象创建纹理(texture)
+	if (texture == NULL)
 	{
 		printf("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
 		return false;
@@ -89,12 +96,16 @@ bool CGame::Init()  //初始化
 	}
 
 	//（4）加载图片
-	if (!LoadImage("./res/town.png"))
+	if (!LoadImage("./res/town.png", g_pMapTexture))
 	{
-		printf("Failed to load image!\n");
+		printf("Failed to load image 'town.png'!\n");
 		return false;
 	}
-
+	if (!LoadImage("./res/xiahouyi.png", g_pSpriteSheetTexture))
+	{
+		printf("Failed to load image 'xiahouyi.png'!\n");
+		return false;
+	}
 	return true;
 }
 
@@ -114,8 +125,8 @@ void CGame::HandleEvents()
 //=========================================================
 void CGame::Update() 
 {
-	CCamera::Instance()->Update();
-	//TODO
+	CPlayer::Instance()->Update();
+	CMap::Instance()->Update();
 }
 
 
@@ -126,17 +137,13 @@ void CGame::Update()
 void CGame::Render()  
 {
 	SDL_SetRenderDrawColor(g_pRenderer, 255, 255, 255, 0);  //设置渲染器的颜色，第一个参数传入渲染器对象
-														//接下来依次是R、G、B值和Alpha值
-//绘制图片三板斧
+             												//接下来依次是R、G、B值和Alpha值
+    //绘制图片三板斧:SDL_RenderClear()、SDL_RenderCopy()、SDL_RenderPresent()
 	SDL_RenderClear(g_pRenderer);  //使用某种绘图颜色来“清除”当前窗口
-    
-	//SDL_Rect srcRect = { CCamera::Instance()->GetX(), CCamera::Instance()->GetY(), SCREEN_WIDTH, SCREEN_HEIGHT }; //TODO，新建一个纹理类CTexture，在LoadImage()的时候把图片读入列表
-	//                                         //      并记录图片尺寸，代替这里的1600和1680
-	//SDL_Rect destRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-	SDL_Rect srcRect = { 0, 0, 1600, 1680 }; //TODO，新建一个纹理类CTexture，在LoadImage()的时候把图片读入列表
-	                                         //      并记录图片尺寸，代替这里的1600和1680
-	SDL_Rect destRect = { CCamera::Instance()->GetX(), CCamera::Instance()->GetY(), 1600, 1680 };
-	SDL_RenderCopy(g_pRenderer, g_pTexture, &srcRect, &destRect); //将纹理复制到渲染器中；
+
+	CMap::Instance()->Render();
+	CPlayer::Instance()->Render();
+
 	SDL_RenderPresent(g_pRenderer);  //将渲染器中的内容在窗口中显示出来
 }
 
@@ -149,16 +156,18 @@ void CGame::Close()
 {
 	//销毁窗口对象
 	SDL_DestroyWindow(g_pWindow);
-	g_pWindow = NULL;
+	g_pWindow = NULL;  //当g_pWindow不再指向窗口时，手动设为NULL；
 
 	//销毁渲染器对象
 	SDL_DestroyRenderer(g_pRenderer);
 	g_pRenderer = NULL;
 
 	//销毁纹理对象
-	SDL_DestroyTexture(g_pTexture);
-	g_pTexture = NULL;
+	SDL_DestroyTexture(g_pMapTexture);
+	g_pMapTexture = NULL;
+	SDL_DestroyTexture(g_pSpriteSheetTexture);
+	g_pSpriteSheetTexture = NULL;
 
-	//清除所有已初始化的子系统。在程序结束时调用。
-	SDL_Quit();
+	//清除所有已初始化的子系统，并退出SDL。在程序结束时调用。
+	SDL_Quit();  
 }

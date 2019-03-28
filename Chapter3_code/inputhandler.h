@@ -93,7 +93,4 @@ private:
     static CInputHandler* s_pInstance;
 };
 
-typedef CInputHandler TheInputHandler;
-
-
 #endif /* defined(__InputHandler_H__) */
