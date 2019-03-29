@@ -6,6 +6,8 @@
 //说明：通常应该尽量避免在项目中使用全局变量。
 //这里只是暂时将一些对象写成全局变量的形式，保证源代码尽可能简单。
  
+extern const int g_moveVelocity;
+
 // 窗口宽高
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;

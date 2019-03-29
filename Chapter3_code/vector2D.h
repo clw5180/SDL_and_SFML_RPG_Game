@@ -15,13 +15,13 @@ public:
     
     Vector2D(int x, int y): m_x(x), m_y(y) {}
     
-    const int getX() { return m_x; }
-    const int getY() { return m_y; }
+    const int GetX() { return m_x; }
+    const int GetY() { return m_y; }
     
-    void setX(int x) { m_x = x; }
-    void setY(int y) { m_y = y; }
+    void SetX(int x) { m_x = x; }
+    void SetY(int y) { m_y = y; }
     
-    int length() 
+    int Length() 
 	{ 
 		return (int)sqrt(m_x * m_x + m_y * m_y); 
 	}
@@ -79,15 +79,16 @@ public:
     }
 
     
-    void normalize()
+    void Normalize()
     {
-        int l = length();
+        int l = Length();
         if ( l > 0)
         {
             (*this) *= 1 / l;
         }
     }
     
+private:
 	int m_x;
 	int m_y;
 };

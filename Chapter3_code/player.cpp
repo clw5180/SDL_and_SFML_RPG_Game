@@ -3,6 +3,9 @@
 #include "global.h"  //for SCREEN_WIDTH，SCREEN_HEIGHT
 #include "map.h"     //处理角色行走到地图边界的情形
 
+
+const int g_moveVelocity = 4; //clw note：debug
+
 CPlayer* CPlayer::s_pInstance = NULL;
 
 CPlayer::CPlayer()
@@ -17,64 +20,97 @@ CPlayer::~CPlayer()
 
 void CPlayer::Update()
 {
-	//根据角色位置的不同，角色在地图上的移动可分为3种情况：
-	//（1）正常角色都会在地图中间：让角色显示在屏幕中间位置，即
-	//m_x = (SCREEN_WIDTH - m_w) / 2;
-	//m_y = (SCREEN_HEIGHT - m_h) / 2;
+	/*
+	  根据角色位置的不同，角色在地图上的移动可分为两大类：
+	  （1）角色在地图中间时：让角色显示在屏幕中间位置，即
+	  m_x = (SCREEN_WIDTH - m_w) / 2;
+	  m_y = (SCREEN_HEIGHT - m_h) / 2;
+	  （2）角色在地图边缘位置（靠上/下/左/右）
+	  在检测到角色位于地图边缘后，应保证地图不动，角色离开窗口中心位置；
+	  处理较为复杂，见下。
+	                                                                  */
 
-	//依次处理左、右、上、下
-	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
+	//依次处理左、右、上、下四种按键
+	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT)) //向左走
 	{
 		m_currentRow = 4;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERLEFT;
-		//（2）角色在地图靠左或靠右的位置时
-		if (CMap::Instance()->GetX() >= 0 || CMap::Instance()->GetX() <= -(MAP_WIDTH - SCREEN_WIDTH))
+		//角色在地图靠左或靠右的位置，向左走
+		m_x -= g_moveVelocity; //如在地图靠左侧区域：角色离开窗口中心位置继续向左移动；如在地图靠右侧区域：角色从右边向中心点位置返回。
+		if (CMap::Instance()->GetX() >= 0) //左侧边缘区域  TODO：这个大于等于改成等于？？
+		{	
+			if (m_x < 0)   //防止在左侧区域时，角色向左移动到地图边缘之外
+				m_x = 0;
+		}
+		else if (CMap::Instance()->GetX() <= -(MAP_WIDTH - SCREEN_WIDTH)) //右侧边缘区域
 		{
-			m_x -= 4; // 允许角色继续向左移动；
+			if (m_x < (SCREEN_WIDTH - m_w) / 2)   //防止角色向左移动超过窗口中心点
+				m_x = (SCREEN_WIDTH - m_w) / 2;
 		}
 		else
 		{
 			m_x = (SCREEN_WIDTH - m_w) / 2;
 		}
 	}
-	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
+	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT)) //向右走
 	{
 		m_currentRow = 2;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERRIGHT;
-		if (CMap::Instance()->GetX() <= -(MAP_WIDTH - SCREEN_WIDTH) || CMap::Instance()->GetX() >= 0) //角色在地图靠右位置时
+		m_x += g_moveVelocity; //如在地图靠左侧区域：角色从左边向中心点位置返回。如在地图靠右侧区域：角色离开窗口中心位置继续向右移动；
+		if (CMap::Instance()->GetX() >= 0) //左侧边缘区域
 		{
-			m_x += 4;  //允许角色继续向右移动，同理。
+			if (m_x > (SCREEN_WIDTH - m_w) / 2)  //防止角色向右移动超过窗口中心点
+				m_x = (SCREEN_WIDTH - m_w) / 2; 
+		}
+		else if (CMap::Instance()->GetX() <= -(MAP_WIDTH - SCREEN_WIDTH))//右侧边缘区域
+		{
+			if (m_x > SCREEN_WIDTH - m_w)   //防止在右侧区域时，角色向右移动到地图边缘之外
+				m_x = SCREEN_WIDTH - m_w;
 		}
 		else
 		{
 			m_x = (SCREEN_WIDTH - m_w) / 2;
 		}
 	}
-	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
+
+	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP)) //向上走
 	{
 		m_currentRow = 3;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERUP;
-		//（3）角色在地图靠上或靠下的位置，允许角色继续向上或向下移动，同理。
-		if (CMap::Instance()->GetY() >= 0 || CMap::Instance()->GetY() <= -(MAP_HEIGHT - SCREEN_HEIGHT))
+		m_y -= g_moveVelocity;
+		if (CMap::Instance()->GetY() >= 0)   //上边缘区域
 		{
-			m_y -= 4;
+			if (m_y < 0)    //防止角色向上移动到地图边缘之外
+				m_y = 0;
+		}
+		else if (CMap::Instance()->GetY() <= -(MAP_HEIGHT - SCREEN_HEIGHT)) //下边缘区域
+		{
+			if (m_y < (SCREEN_HEIGHT - m_h) / 2)  //防止向上走超过窗口中心点
+				m_y = (SCREEN_HEIGHT - m_h) / 2;
 		}
 		else
 		{
 			m_y = (SCREEN_HEIGHT - m_h) / 2;
 		}
 	}
-	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
+	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN)) //向下走
 	{
 		m_currentRow = 1;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERDOWN;
-		if (CMap::Instance()->GetY() <= -(MAP_HEIGHT - SCREEN_HEIGHT) || CMap::Instance()->GetY() >= 0)
+		m_y += g_moveVelocity;
+		if (CMap::Instance()->GetY() >= 0)  //上边缘区域
 		{
-			m_y += 4;
+			if (m_y > (SCREEN_HEIGHT - m_h) / 2)
+				m_y = (SCREEN_HEIGHT - m_h) / 2; //防止向下走超过窗口中心点
+		}
+		else if (CMap::Instance()->GetY() <= -(MAP_HEIGHT - SCREEN_HEIGHT))  //下边缘区域
+		{
+			if (m_y > SCREEN_HEIGHT - m_h)   //防止角色向下移动到地图边缘之外
+				m_y = SCREEN_HEIGHT - m_h;
 		}
 		else
 		{

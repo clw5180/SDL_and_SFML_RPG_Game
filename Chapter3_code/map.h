@@ -13,22 +13,19 @@ public:
 		return s_pInstance;
 	}
 
-	void Update();
-	void Render();
-
-	void SetX(int x) { m_x = x; }
-	void SetY(int y) { m_y = y; }
 	int GetX() { return m_x; }
 	int GetY() { return m_y; }
+	void Update();
+	void Render();
 
 private:
 	CMap();
 	~CMap();
 	
 	static CMap* s_pInstance;
-	//int m_x = -1296;  //clw note：for debug，可以是其它位置，比如（0,0）
-	int m_x = -50;
-	int m_y = -552;
+
+	int m_x = -1146;
+	int m_y = -412; //clw note：for debug，也可以是其它位置，比如（0,0）
 };
 
 #endif  /* defined(__MAP_H__)*/

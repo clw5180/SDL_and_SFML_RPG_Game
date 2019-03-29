@@ -13,6 +13,11 @@ public:
 		return s_pInstance;
 	}
 
+	int GetX() { return m_x; }
+	int GetY() { return m_y; }
+	int GetWidth() { return m_w; }
+	int GetHeight() { return m_h; }
+
 	void Render();
 	void Update();
 
@@ -43,13 +48,13 @@ private:
 	int m_movedirection = PLAYERDOWN;
 
 	// 窗口中角色的宽高和角色的位置
-	
-
+	int m_x = 0;
+	int m_y = 0;
 	int m_w = 448 / m_numFrames; //TODO，这里暂时hard code图片的宽高尺寸，后面加入纹理管理器类，
 						   //每次Load图片时就会管理好每一张图片的尺寸等信息
 	int m_h = 819 / m_numRows;  //TODO
-	int m_x = 0;
-	int m_y = 0;
+
+	
 };
 
 #endif  /* defined(__PLAYER_H__)*/

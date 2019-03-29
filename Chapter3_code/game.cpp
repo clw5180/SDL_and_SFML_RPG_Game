@@ -13,8 +13,8 @@ SDL_Texture *g_pMapTexture = NULL;
 SDL_Texture *g_pSpriteSheetTexture = NULL;
 
 // 窗口宽高
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
 
 // 地图宽高
 const int MAP_WIDTH = 2560;

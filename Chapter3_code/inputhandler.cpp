@@ -126,11 +126,11 @@ int CInputHandler::getAxisX(int joy, int stick) const
     {
         if(stick == 1)
         {
-            return m_joystickValues[joy].first->getX();
+            return m_joystickValues[joy].first->GetX();
         }
         else if(stick == 2)
         {
-            return m_joystickValues[joy].second->getX();
+            return m_joystickValues[joy].second->GetX();
         }
     }
     return 0;
@@ -142,11 +142,11 @@ int CInputHandler::getAxisY(int joy, int stick) const
     {
         if(stick == 1)
         {
-            return m_joystickValues[joy].first->getY();
+            return m_joystickValues[joy].first->GetY();
         }
         else if(stick == 2)
         {
-            return m_joystickValues[joy].second->getY();
+            return m_joystickValues[joy].second->GetY();
         }
     }
     return 0;
@@ -229,8 +229,8 @@ void CInputHandler::onKeyUp()
 //2¡¢Êó±ê²¿·Ö
 void CInputHandler::onMouseMove(SDL_Event &event)
 {
-    m_mousePosition->setX(event.motion.x);
-    m_mousePosition->setY(event.motion.y);
+    m_mousePosition->SetX(event.motion.x);
+    m_mousePosition->SetY(event.motion.y);
 	//std::cout << "x_mouse:" << event.motion.x << "  ";   //clw note£ºfor debug, detect mouse position 
 	//std::cout << "y_mouse:" << event.motion.y << std::endl;
 }
@@ -289,15 +289,15 @@ void CInputHandler::onJoystickAxisMove(SDL_Event &event)
 	{
 		if (event.jaxis.value > m_joystickDeadZone)
 		{
-			m_joystickValues[whichOne].first->setX(1);
+			m_joystickValues[whichOne].first->SetX(1);
 		}
 		else if (event.jaxis.value < -m_joystickDeadZone)
 		{
-			m_joystickValues[whichOne].first->setX(-1);
+			m_joystickValues[whichOne].first->SetX(-1);
 		}
 		else
 		{
-			m_joystickValues[whichOne].first->setX(0);
+			m_joystickValues[whichOne].first->SetX(0);
 		}
 	}
     
@@ -307,15 +307,15 @@ void CInputHandler::onJoystickAxisMove(SDL_Event &event)
 	{
 		if (event.jaxis.value > m_joystickDeadZone)
 		{
-			m_joystickValues[whichOne].first->setY(1);
+			m_joystickValues[whichOne].first->SetY(1);
 		}
 		else if (event.jaxis.value < -m_joystickDeadZone)
 		{
-			m_joystickValues[whichOne].first->setY(-1);
+			m_joystickValues[whichOne].first->SetY(-1);
 		}
 		else
 		{
-			m_joystickValues[whichOne].first->setY(0);
+			m_joystickValues[whichOne].first->SetY(0);
 		}
 	}
 	/*********************************************************************
@@ -349,15 +349,15 @@ void CInputHandler::onJoystickAxisMove(SDL_Event &event)
     //{
     //    if (event.jaxis.value > m_joystickDeadZone)
     //    {
-    //        m_joystickValues[whichOne].second->setX(1);
+    //        m_joystickValues[whichOne].second->SetX(1);
     //    }
     //    else if(event.jaxis.value < -m_joystickDeadZone)
     //    {
-    //        m_joystickValues[whichOne].second->setX(-1);
+    //        m_joystickValues[whichOne].second->SetX(-1);
     //    }
     //    else
     //    {
-    //        m_joystickValues[whichOne].second->setX(0);
+    //        m_joystickValues[whichOne].second->SetX(0);
     //    }
     //}
     
@@ -366,15 +366,15 @@ void CInputHandler::onJoystickAxisMove(SDL_Event &event)
     //{
 		//if (event.jaxis.value > m_joystickDeadZone)
 		//{
-		//	m_joystickValues[whichOne].second->setY(1);
+		//	m_joystickValues[whichOne].second->SetY(1);
 		//}
 		//else if (event.jaxis.value < -m_joystickDeadZone)
 		//{
-		//	m_joystickValues[whichOne].second->setY(-1);
+		//	m_joystickValues[whichOne].second->SetY(-1);
 		//}
 		//else
 		//{
-		//	m_joystickValues[whichOne].second->setY(0);
+		//	m_joystickValues[whichOne].second->SetY(0);
 		//}
     //}
 }
