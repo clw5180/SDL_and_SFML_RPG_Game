@@ -41,11 +41,12 @@ private:
 
 
 	// 和动作相关的变量
-	int m_currentRow = 0;
-	int m_currentFrame = 0;
+	int m_currentRow = 0;  //当前帧处于精灵表（Sprite Sheet）的第多少行
+	int m_currentFrame = 0; //当前帧处于精灵表（Sprite Sheet）的第多少列
 	int m_numFrames = 8;  
-	int m_numRows = 9;  //准备载入8列，9行的角色精灵表 TODO：后面考虑修改这种写法
+	int m_numRows = 9;  //准备载入8列，9行的角色精灵表     TODO：后面考虑修改这种写法?
 	int m_movedirection = PLAYERDOWN;
+	int m_bWalkState = true;
 
 	// 窗口中角色的宽高和角色的位置
 	int m_x = 0;

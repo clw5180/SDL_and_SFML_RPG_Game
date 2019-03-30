@@ -20,8 +20,8 @@ CMap::~CMap()
 //=========================================================
 void CMap::Update()
 {
-	//handle keys
-	//注意：这里角色向上走，可以看做角色不动，而screen image向下移动；
+	//依次处理左、右、上、下四种按键
+	//注意：这里角色向上走，可以看做角色不动，而Map向下移动；
 	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP) && m_y < 0 
 		&& CPlayer::Instance()->GetY() == (SCREEN_HEIGHT - CPlayer::Instance()->GetHeight()) / 2)
 	{

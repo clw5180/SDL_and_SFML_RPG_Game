@@ -4,7 +4,7 @@
 #include "map.h"     //处理角色行走到地图边界的情形
 
 
-const int g_moveVelocity = 4; //clw note：debug
+int g_moveVelocity = 4; //clw note：debug
 
 CPlayer* CPlayer::s_pInstance = NULL;
 
@@ -29,11 +29,21 @@ void CPlayer::Update()
 	  在检测到角色位于地图边缘后，应保证地图不动，角色离开窗口中心位置；
 	  处理较为复杂，见下。
 	                                                                  */
+	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LSHIFT))  //按下左侧shift后开启跑动模式
+	{ 
+		g_moveVelocity = 5;  //跑动速度
+		m_bWalkState = false;
+	}
+	else
+	{ 
+		g_moveVelocity = 3;  //行走速度
+		m_bWalkState = true;
+	}
 
 	//依次处理左、右、上、下四种按键
 	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT)) //向左走
 	{
-		m_currentRow = 4;
+		m_bWalkState ? m_currentRow = 4 : m_currentRow = 8;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERLEFT;
 		//角色在地图靠左或靠右的位置，向左走
@@ -55,7 +65,7 @@ void CPlayer::Update()
 	}
 	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT)) //向右走
 	{
-		m_currentRow = 2;
+		m_bWalkState ? m_currentRow = 2 : m_currentRow = 6;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERRIGHT;
 		m_x += g_moveVelocity; //如在地图靠左侧区域：角色从左边向中心点位置返回。如在地图靠右侧区域：角色离开窗口中心位置继续向右移动；
@@ -77,7 +87,7 @@ void CPlayer::Update()
 
 	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP)) //向上走
 	{
-		m_currentRow = 3;
+		m_bWalkState ? m_currentRow = 3 : m_currentRow = 7;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERUP;
 		m_y -= g_moveVelocity;
@@ -98,7 +108,7 @@ void CPlayer::Update()
 	}
 	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN)) //向下走
 	{
-		m_currentRow = 1;
+		m_bWalkState ? m_currentRow = 1 : m_currentRow = 5;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2)));
 		m_movedirection = PLAYERDOWN;
 		m_y += g_moveVelocity;
@@ -122,28 +132,28 @@ void CPlayer::Update()
 	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT) &&
 		CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN))
 	{
-		m_currentRow = 4;
+		m_bWalkState ? m_currentRow = 4 : m_currentRow = 8;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2) + (m_numFrames / 2)));
 		m_movedirection = PLAYERLEFTDOWN;
 	}
 	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT) &&
 		CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP))
 	{
-		m_currentRow = 2;
+		m_bWalkState ? m_currentRow = 2 : m_currentRow = 6;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2) + (m_numFrames / 2)));
 		m_movedirection = PLAYERRIGHTUP;
 	}
 	if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_UP) &&
 		CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_LEFT))
 	{
-		m_currentRow = 3;
+		m_bWalkState ? m_currentRow = 3 : m_currentRow = 7;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2) + (m_numFrames / 2)));
 		m_movedirection = PLAYERLEFTUP;
 	}
 	else if (CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_DOWN) &&
 		CInputHandler::Instance()->isKeyDown(SDL_SCANCODE_RIGHT))
 	{
-		m_currentRow = 1;
+		m_bWalkState ? m_currentRow = 1 : m_currentRow = 5;
 		m_currentFrame = int(((SDL_GetTicks() / (150)) % (m_numFrames / 2) + (m_numFrames / 2)));
 		m_movedirection = PLAYERRIGHTDOWN;
 	}
