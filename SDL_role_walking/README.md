@@ -4,6 +4,6 @@
 ### 2、效果演示
 这里使用到了仙剑2的城镇场景和幽城幻剑录的主要角色夏侯仪。测试了一下人物在地图行走的效果，除了地图没加遮挡层，然后人物在45°方向行走之后停下来的朝向有点问题，其他都还算OK。
 
-![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/Chapter3_code/screenshot.png)  
+![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/SDL_role_walking/screenshot.png)  
   
 
