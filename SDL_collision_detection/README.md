@@ -12,6 +12,6 @@
 
 
 ### 3、效果演示
-![这里随便写文字](https://github.com/clw5180/SDL_collision_detection/blob/master/screenshot1.png)
+![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/SDL_collision_detection/screenshot1.png)
 
 
