@@ -1,4 +1,4 @@
-⚡️ A game called 'gluttonous snake' made by SDL2, easy to expand.
+## A game called 'gluttonous snake' made by SDL2, easy to expand.
 
 ### 1、说明
 贪吃蛇游戏，也是一个简单的游戏框架，主要功能包括：
