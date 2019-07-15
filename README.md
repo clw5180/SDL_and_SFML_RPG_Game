@@ -23,7 +23,7 @@
 
 ![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/SDL_role_walking/screenshot.png) 
 
-## SDL实现的贪吃蛇游戏
+## SDL实现的极简贪吃蛇游戏：
 
 ![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/SDL_snake/screenshot1.png) 
 
