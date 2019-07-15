@@ -6,7 +6,7 @@
 
 # SDL经典项目
 * SDL复刻版仙剑奇侠传：sdlpal 测试截图（源码：https://github.com/sdlpal/sdlpal，使用SDL1.2开发）
-(https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/screenshot/3.jpg)  
+![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/screenshot/3.jpg)  
 
 
 # 我的SDL2.0游戏开发之旅 SDL2.0-Tour-of-Game-Development
