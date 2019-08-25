@@ -1,4 +1,4 @@
-# SFML经典项目
+# - SFML经典项目
 ## SFML制作的2d rpg游戏：Cendrics2 测试截图（源码: https://github.com/tizian/Cendric2）
 ![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/screenshot/1.png)  
 ![这里随便写文字](https://github.com/clw5180/SDL2.0-Tour-of-Game-Development/blob/master/screenshot/2.png)  
